@@ -72,7 +72,11 @@ Sample curl commands
 Here are some sample curl commands that access resources exposed by this sample:
 
 ``` 
-curl -v 'http://localhost:8080/customers'
-curl -v 'http://localhost:8080/customers/1'
-curl -v 'http://localhost:8080/customers' -H 'Accept: application/json'
+curl -v 'http://localhost:8080/customer'
+curl -v 'http://localhost:8080/customer/1'
+curl -v 'http://localhost:8080/customer' -H 'Accept: application/json'
+curl -v 'http://localhost:8080/customer' -H 'Accept: application/json' -H 'Content-type: application/json' -X POST -d '{"name":"mina","city":"Tehran"}'
+curl -v 'http://localhost:8080/customer/1' -H 'Accept: application/json' -H 'Content-type: application/json' -X PUT -d '{"id":"1", "name":"best customer","city":"Berlin"}'
+curl 'http://localhost:8080/customer' -H 'Accept: application/json' 
+ 
 ```

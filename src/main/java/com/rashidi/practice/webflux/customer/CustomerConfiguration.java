@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
@@ -22,21 +23,19 @@ public class CustomerConfiguration {
   public RouterFunction<ServerResponse> customerRouter(CustomerHandler customerHandler) {
 
     RouterFunction<ServerResponse> json = route()
-      .nest(accept(APPLICATION_JSON), builder -> {
-        builder
-          .GET("/{id}", customerHandler::findById)
-          .GET("", customerHandler::findAll);
-      }).build();
+      .nest(accept(APPLICATION_JSON), builder -> builder
+        .GET("/{id}", customerHandler::findById)
+        .GET("", customerHandler::findAll)
+        .POST("", contentType(APPLICATION_JSON), customerHandler::save)
+        .PUT("/{id}", contentType(APPLICATION_JSON), customerHandler::update)).build();
 
     RouterFunction<ServerResponse> html = route()
-      .nest(accept(TEXT_HTML), builder -> {
-        builder
-          .GET("/{id}", customerHandler::renderCustomer)
-          .GET("", customerHandler::renderCustomers);
-      }).build();
+      .nest(accept(TEXT_HTML), builder -> builder
+        .GET("/{id}", customerHandler::renderCustomer)
+        .GET("", customerHandler::renderCustomers)).build();
 
     return route()
-      .path("/customers", () -> html.and(json))
+      .path("/customer", () -> html.and(json))
       .build();
   }
 

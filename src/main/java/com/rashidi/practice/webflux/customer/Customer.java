@@ -7,9 +7,9 @@ import org.springframework.data.annotation.Id;
 public class Customer {
 
   @Id
-  private String id;
-  private String name;
-  private String city;
+  private final String id;
+  private final String name;
+  private final String city;
 
   public Customer(String id, String name, String city) {
     this.id = id;
